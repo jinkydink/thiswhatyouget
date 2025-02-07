@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haha! Gotcha!</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let width = 400, height = 200;
+            let x = Math.floor(Math.random() * (screen.width - width));
+            let y = Math.floor(Math.random() * (screen.height - height));
+            let dx = 10, dy = 10;
+
+            function moveWindow(win) {
+                if (!win || win.closed) return;
+                if (win.screenX + width >= screen.width || win.screenX <= 0) dx *= -1;
+                if (win.screenY + height >= screen.height || win.screenY <= 0) dy *= -1;
+
+                x += dx;
+                y += dy;
+                win.moveTo(x, y);
+                setTimeout(() => moveWindow(win), 50);
+            }
+
+            let prankWindow = window.open("", "", `width=${width},height=${height},left=${x},top=${y}`);
+            if (prankWindow) {
+                prankWindow.document.write(`
+                    <h1 style="text-align:center;margin-top:40px;">😂 This is what you get!</h1>
+                    <h2 style="text-align:center;color:red;">You are a bitch!</h2>
+                `);
+                prankWindow.document.body.style.backgroundColor = "black";
+                prankWindow.document.body.style.color = "white";
+                prankWindow.document.body.style.fontFamily = "Arial, sans-serif";
+
+                moveWindow(prankWindow);
+
+                // Close after 4 seconds
+                setTimeout(() => {
+                    if (prankWindow && !prankWindow.closed) prankWindow.close();
+                }, 4000);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1 style="text-align: center; margin-top: 50px;">😆 Too Late, You Clicked It!</h1>
+</body>
+</html>
